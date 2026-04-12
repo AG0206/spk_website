@@ -1,0 +1,74 @@
+{% extends 'custom_admin/base_admin.html' %}
+{% block title %}Manage Events{% endblock %}
+{% block page_title %}Manage Events{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h2>Events</h2>
+    <p>{{ events.count }} event{{ events.count|pluralize }} in total</p>
+  </div>
+  <a href="{% url 'custom_admin_event_add' %}" class="btn-spk btn-spk-navy"><i class="bi bi-plus-circle-fill"></i> Add Event</a>
+</div>
+
+<div class="panel">
+  <div class="table-responsive">
+    <table class="spk-table">
+      <thead>
+        <tr>
+          <th width="60">Image</th>
+          <th>Title</th>
+          <th>Badge</th>
+          <th>Date</th>
+          <th>Location</th>
+          <th>Featured</th>
+          <th>Active</th>
+          <th>Order</th>
+          <th width="130">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for event in events %}
+        <tr>
+          <td>
+            {% if event.image %}
+              <img src="{{ event.image.url }}" class="td-img" alt="{{ event.title }}"/>
+            {% else %}
+              <div class="td-img-placeholder"><i class="bi bi-image"></i></div>
+            {% endif %}
+          </td>
+          <td>
+            <strong style="font-size:14px;">{{ event.title }}</strong>
+            <div style="font-size:12px;color:#8898b8;margin-top:2px;">{{ event.description|truncatechars:55 }}</div>
+          </td>
+          <td><span class="badge-spk badge-navy">{{ event.badge }}</span></td>
+          <td style="white-space:nowrap;font-size:13px;">{{ event.date_label }}</td>
+          <td style="font-size:13px;">{{ event.location }}</td>
+          <td>
+            {% if event.is_featured %}<span class="badge-spk badge-gold">⭐ Yes</span>
+            {% else %}<span style="color:#ccc;font-size:13px;">—</span>{% endif %}
+          </td>
+          <td>
+            {% if event.is_active %}<span class="badge-spk badge-green">Active</span>
+            {% else %}<span class="badge-spk badge-red">Inactive</span>{% endif %}
+          </td>
+          <td style="font-size:13px;text-align:center;">{{ event.order }}</td>
+          <td>
+            <div style="display:flex;gap:6px;">
+              <a href="{% url 'custom_admin_event_edit' event.pk %}" class="btn-spk btn-spk-outline btn-spk-sm"><i class="bi bi-pencil-fill"></i></a>
+              <a href="{% url 'custom_admin_event_delete' event.pk %}"
+                 onclick="return confirm('Delete event "{{ event.title }}"? This cannot be undone.')"
+                 class="btn-spk btn-spk-danger btn-spk-sm"><i class="bi bi-trash-fill"></i></a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="9" style="text-align:center;color:#8898b8;padding:48px;">
+          No events yet. <a href="{% url 'custom_admin_event_add' %}" style="color:var(--navy);font-weight:600;">Add the first one →</a>
+        </td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

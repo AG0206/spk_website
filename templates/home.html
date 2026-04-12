@@ -1,0 +1,477 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}SPK Organisation – Empowering Through Beauty Education{% endblock %}
+
+{% block content %}
+
+<!-- ══════════════════════════════════════
+     SECTION 1 – HOME (HERO)
+══════════════════════════════════════ -->
+<section id="home" class="hero-section">
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+
+  <div class="container-xl hero-grid">
+
+    <!-- LEFT -->
+    <div class="hero-content">
+
+      <div class="hero-badge" data-aos="fade-up">
+        <span class="badge-dot"></span>
+        Since 2020 · Free Makeup Education
+      </div>
+
+      <h1 class="hero-title" data-aos="fade-up" data-aos-delay="80">
+        Empowering Through<br/>
+        <em>Beauty Education</em>
+      </h1>
+
+      <p class="hero-desc" data-aos="fade-up" data-aos-delay="160">
+        SPK Organisation has been transforming lives since 2020 — providing
+        free, professional makeup education to underserved communities across India,
+        one brushstroke at a time.
+      </p>
+
+      <div class="hero-actions" data-aos="fade-up" data-aos-delay="240">
+        <a href="#contact" class="btn-spk-primary">
+          <i class="bi bi-envelope-fill"></i> Get In Touch
+        </a>
+        <a href="#about" class="btn-spk-outline">
+          Our Story <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+
+      <!-- STATS — 4-column grid so they never wrap -->
+      <div class="hero-stats" data-aos="fade-up" data-aos-delay="320">
+        <div class="hstat">
+          <div class="hstat-row">
+            <span class="hstat-num" data-count="80000">0</span><sup>+</sup>
+          </div>
+          <span class="hstat-label">Lives Transformed</span>
+        </div>
+        <div class="hstat-divider"></div>
+        <div class="hstat">
+          <div class="hstat-row">
+            <span class="hstat-num" data-count="100">0</span><sup>+</sup>
+          </div>
+          <span class="hstat-label">Events Held</span>
+        </div>
+        <div class="hstat-divider"></div>
+        <div class="hstat">
+          <div class="hstat-row">
+            <span class="hstat-num" data-count="200">0</span><sup>+</sup>
+          </div>
+          <span class="hstat-label">Partners</span>
+        </div>
+        <div class="hstat-divider"></div>
+        <div class="hstat">
+          <div class="hstat-row">
+            <span class="hstat-num" data-count="20">0</span><sup>+</sup>
+          </div>
+          <span class="hstat-label">Global Artists</span>
+        </div>
+      </div>
+
+    </div><!-- /hero-content -->
+
+    <!-- RIGHT — Image arch -->
+    <div class="hero-visual" data-aos="fade-left" data-aos-delay="200">
+
+      <div class="hero-arch">
+        <img src="{% static 'images/1.png' %}" alt="SPK Organisation Founders — Sheital & Pravin Karwade"
+             onerror="this.style.display='none';this.parentElement.classList.add('arch-placeholder')" />
+        <div class="arch-overlay">
+          <span class="arch-quote">"Transforming lives one brushstroke at a time"</span>
+        </div>
+      </div>
+
+      <!-- Floating badges — repositioned to not overlap image content -->
+      <div class="hero-pill pill-1" data-aos="zoom-in" data-aos-delay="500">
+        <i class="bi bi-star-fill"></i><span>95% Success Rate</span>
+      </div>
+      <div class="hero-pill pill-2" data-aos="zoom-in" data-aos-delay="640">
+        <i class="bi bi-globe2"></i><span>International Network</span>
+      </div>
+
+    </div><!-- /hero-visual -->
+
+  </div><!-- /hero-grid -->
+
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 2 – ABOUT
+══════════════════════════════════════ -->
+<section id="about" class="about-section">
+  <div class="container-xl">
+
+    <div class="sec-header text-center" data-aos="fade-up">
+      <span class="sec-label">Who We Are</span>
+      <h2 class="sec-title">Our Mission <em>&amp; Vision</em></h2>
+      <div class="sec-rule"></div>
+    </div>
+
+    <div class="row g-4 mt-2 mb-5">
+      <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+        <div class="mv-card">
+          <div class="mv-icon"><i class="bi bi-bullseye"></i></div>
+          <h3>Our Mission</h3>
+          <p>At SPK Organisation, we are dedicated to providing free makeup education to underserved and skillful individuals across India. Since 2020, we have been breaking barriers in the beauty industry by making professional training accessible to everyone, regardless of their financial background.</p>
+          <p>We believe that talent knows no boundaries, and every aspiring makeup artist deserves the opportunity to learn and grow.</p>
+        </div>
+      </div>
+      <div class="col-lg-6" data-aos="fade-left" data-aos-delay="100">
+        <div class="mv-card accent">
+          <div class="mv-icon"><i class="bi bi-eye"></i></div>
+          <h3>Our Vision</h3>
+          <p>We envision a world where beauty education becomes a pathway to empowerment. Our goal is to uplift communities through beauty skills and opportunities, creating a network of confident, skilled professionals who can build sustainable careers.</p>
+          <p>Through hands-on training and industry connections, we transform lives one brushstroke at a time.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leadership -->
+    <div class="sec-header text-center mt-5 mb-4" data-aos="fade-up">
+      <span class="sec-label">The People Behind SPK</span>
+      <h2 class="sec-title">Founders <em>&amp; Leadership</em></h2>
+      <div class="sec-rule"></div>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="0">
+        <div class="team-card">
+          <div class="team-avatar">
+            <img src="{% static 'images/sheital.jpg' %}" alt="Sheital Praveen Karwade"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="avatar-initials" style="display:none">SK</div>
+          </div>
+          <h4>Sheital Praveen Karwade</h4>
+          <span class="team-role">Founder</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="80">
+        <div class="team-card">
+          <div class="team-avatar">
+            <img src="{% static 'images/pravin.jpg' %}" alt="Pravin Nagorao Karwade"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="avatar-initials" style="display:none">PK</div>
+          </div>
+          <h4>Pravin Nagorao Karwade</h4>
+          <span class="team-role">Co-Founder</span>
+        </div>
+      </div>
+      
+      <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="240">
+        <div class="team-card">
+          <div class="team-avatar">
+            <img src="{% static 'images/shreyansh.jpg' %}" alt="Shreyansh Pravin Karwade"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="avatar-initials" style="display:none">SK</div>
+          </div>
+          <h4>Shreyansh Pravin Karwade</h4>
+          <span class="team-role">Manager</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="160">
+        <div class="team-card">
+          <div class="team-avatar">
+            <img src="{% static 'images/kanchan.jpg' %}" alt="Kanchan Raj Ganvir"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="avatar-initials" style="display:none">KG</div>
+          </div>
+          <h4>Kanchan Raj Ganvir</h4>
+          <span class="team-role">Head Coordinator</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="impact-strip" data-aos="fade-up">
+      <div class="istrip-item"><i class="bi bi-mortarboard-fill"></i> Free education to underserved communities</div>
+      <div class="istrip-item"><i class="bi bi-palette2"></i> Skill development for makeup artists</div>
+      <div class="istrip-item"><i class="bi bi-briefcase-fill"></i> Career opportunities across India &amp; beyond</div>
+      <div class="istrip-item"><i class="bi bi-globe2"></i> International reach with 20+ global artists</div>
+      <div class="istrip-item"><i class="bi bi-people-fill"></i> Community empowerment through beauty</div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 3 – EVENTS  (🔴 DYNAMIC)
+══════════════════════════════════════ -->
+<section id="events" class="events-section">
+
+  <div class="events-header-band">
+    <div class="container-xl">
+      <span class="sec-label light" data-aos="fade-up">What We Do</span>
+      <h2 class="sec-title light" data-aos="fade-up" data-aos-delay="60">Our Events <em>&amp; Workshops</em></h2>
+      <div class="sec-rule gold" data-aos="fade-up" data-aos-delay="120"></div>
+      <p class="events-intro" data-aos="fade-up" data-aos-delay="180">
+        Since 2020, SPK Organisation has conducted 100+ workshops, training sessions, and
+        beauty education events nationwide — transforming lives through hands-on practice.
+      </p>
+    </div>
+  </div>
+
+  <div class="container-xl events-body">
+
+    {% if events %}
+    <div class="row g-4">
+
+      {% for event in events %}
+      <div class="col-md-6 col-lg-4"
+           data-aos="fade-up"
+           data-aos-delay="{% cycle '0' '80' '160' %}">
+        <div class="event-card {% if event.is_featured %}featured{% endif %}">
+
+          <div class="event-img-wrap">
+            {% if event.image %}
+              <img src="{{ event.image.url }}" alt="{{ event.title }}" loading="lazy" />
+            {% endif %}
+            <span class="event-badge {% if event.badge == 'Global' %}gold-badge{% endif %}">
+              {{ event.badge }}
+            </span>
+          </div>
+
+          <div class="event-body">
+            <div class="event-meta">
+              <span><i class="bi bi-calendar3"></i> {{ event.date_label }}</span>
+              <span><i class="bi bi-geo-alt"></i> {{ event.location }}</span>
+            </div>
+            <h3>{{ event.title }}</h3>
+            <p>{{ event.description }}</p>
+            <a href="#contact" class="event-link">
+              {{ event.link_label }} <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+
+        </div>
+      </div>
+      {% endfor %}
+
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="160">
+        <div class="event-card event-cta-card">
+          <div class="event-cta-inner">
+            <i class="bi bi-calendar-plus"></i>
+            <h3>Host an Event With Us</h3>
+            <p>Collaborate with SPK Organisation to bring free beauty education workshops to your city or community.</p>
+            <a href="#contact" class="btn-spk-primary sm">Get In Touch</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    {% else %}
+    <div class="no-content-placeholder" data-aos="fade-up">
+      <i class="bi bi-calendar-event"></i>
+      <h3>Events Coming Soon</h3>
+      <p>We're planning exciting workshops and training sessions. Stay tuned or contact us to know more!</p>
+      <a href="#contact" class="btn-spk-primary">Contact Us</a>
+    </div>
+    {% endif %}
+
+    <div class="timeline-strip" data-aos="fade-up">
+      <div class="timeline-strip-title">Our Journey</div>
+      <div class="timeline-items">
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2018</div><div class="tl-text">Pravin Karwade begins in makeup education, laying the foundation</div></div>
+        <div class="tl-item"><div class="tl-dot active"></div><div class="tl-year">2020</div><div class="tl-text">SPK Organisation officially founded with free education mission</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2021</div><div class="tl-text">Rapid expansion — cosmetics brands, salons &amp; company partnerships</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2022</div><div class="tl-text">50+ events milestone. International collaborations with 20+ countries</div></div>
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">2023</div><div class="tl-text">100+ events, 80,000+ participants, 200+ industry partnerships</div></div>
+        <div class="tl-item"><div class="tl-dot future"></div><div class="tl-year">Future</div><div class="tl-text">Online education modules &amp; expanded national–international reach</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 4 – GALLERY  (🔴 DYNAMIC)
+══════════════════════════════════════ -->
+<section id="gallery" class="gallery-section">
+  <div class="container-xl">
+
+    <div class="sec-header text-center" data-aos="fade-up">
+      <span class="sec-label">Our Moments</span>
+      <h2 class="sec-title">Event <em>Gallery</em></h2>
+      <div class="sec-rule"></div>
+      <p class="sec-sub">A glimpse of the transformations, events, and community we have built since 2020.</p>
+    </div>
+
+    <div class="gallery-filters" data-aos="fade-up" data-aos-delay="80">
+      <button class="gf-btn active" data-filter="all">All</button>
+      <button class="gf-btn" data-filter="events">Events</button>
+      <button class="gf-btn" data-filter="training">Training</button>
+      <button class="gf-btn" data-filter="team">Team</button>
+    </div>
+
+    {% if gallery %}
+    <div class="gallery-grid" id="galleryGrid">
+      {% for item in gallery %}
+      <div class="g-item {% if item.size == 'large' %}large{% elif item.size == 'tall' %}tall{% endif %}"
+           data-cat="{{ item.category }}"
+           data-aos="zoom-in"
+           data-aos-delay="{% cycle '0' '60' '120' '0' '60' '120' %}">
+        <img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy" />
+        <div class="g-overlay"><i class="bi bi-zoom-in"></i></div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="no-content-placeholder" data-aos="fade-up">
+      <i class="bi bi-images"></i>
+      <h3>Gallery Coming Soon</h3>
+      <p>We're curating our best moments. Upload photos via the admin panel to show them here.</p>
+    </div>
+    {% endif %}
+
+    <div class="testimonial-banner" data-aos="fade-up">
+      <div class="testi-quote">
+        <i class="bi bi-quote"></i>
+        <p>"SPK Organisation changed my life completely. I came from a small village with no resources, and now I am a certified makeup artist earning for my family. The free training gave me skills and confidence I never thought possible."</p>
+        <strong>— Priya Sharma, Program Graduate</strong>
+      </div>
+      <div class="testi-stats">
+        <div class="ts-item"><span>80,000+</span><em>Lives Transformed</em></div>
+        <div class="ts-item"><span>100+</span><em>Training Events</em></div>
+        <div class="ts-item"><span>500+</span><em>Career Placements</em></div>
+        <div class="ts-item"><span>95%</span><em>Success Rate</em></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 5 – CONTACT US
+══════════════════════════════════════ -->
+<section id="contact" class="contact-section">
+  <div class="container-xl">
+
+    <div class="sec-header text-center" data-aos="fade-up">
+      <span class="sec-label">Reach Out</span>
+      <h2 class="sec-title">Contact <em>Us</em></h2>
+      <div class="sec-rule"></div>
+      <p class="sec-sub">Want to join a program, partner with us, or simply learn more? We'd love to hear from you.</p>
+    </div>
+
+    {% if messages %}
+    <div class="messages-container mb-4">
+      {% for msg in messages %}
+      <div class="spk-alert {% if msg.tags == 'success' %}spk-alert-success{% else %}spk-alert-error{% endif %}">
+        <i class="bi {% if msg.tags == 'success' %}bi-check-circle-fill{% else %}bi-exclamation-circle-fill{% endif %}"></i>
+        {{ msg }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="row g-5 mt-1">
+
+      <div class="col-lg-5" data-aos="fade-right">
+        <div class="contact-info-box">
+          <div class="ci-item">
+            <div class="ci-icon"><i class="bi bi-telephone-fill"></i></div>
+            <div>
+              <strong>Phone</strong>
+              <a href="tel:+919922045997">+91 99220 45997</a>
+              <a href="tel:+917758955707">+91 77589 55707</a>
+              <a href="tel:+918329323198">+91 83293 23198</a>
+            </div>
+          </div>
+          <div class="ci-item">
+            <div class="ci-icon"><i class="bi bi-envelope-fill"></i></div>
+            <div>
+              <strong>Email</strong>
+              <a href="mailto:pravinkarwade87@gmail.com">pravinkarwade87@gmail.com</a>
+            </div>
+          </div>
+          <div class="ci-item">
+            <div class="ci-icon"><i class="bi bi-instagram"></i></div>
+            <div>
+              <strong>Instagram</strong>
+              <a href="https://instagram.com/SPK__MAKEOVER__" target="_blank">@SPK__MAKEOVER__</a>
+            </div>
+          </div>
+          <div class="ci-item">
+            <div class="ci-icon"><i class="bi bi-geo-alt-fill"></i></div>
+            <div>
+              <strong>Location</strong>
+              <span>Nagpur, Maharashtra, India</span>
+            </div>
+          </div>
+          <a href="https://wa.me/919922045997?text=Hello%20SPK%20Organisation%2C%20I%20would%20like%20to%20know%20more%20about%20your%20programs."
+             class="wa-cta-btn" target="_blank">
+            <i class="bi bi-whatsapp"></i> Chat on WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <div class="col-lg-7" data-aos="fade-left" data-aos-delay="100">
+        <form class="contact-form" method="post" action="{% url 'home' %}" novalidate>
+          {% csrf_token %}
+          <input type="hidden" name="next" value="#contact" />
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <div class="cf-group">
+                <label for="cf_name">Full Name <span class="req">*</span></label>
+                <input type="text" id="cf_name" name="name" placeholder="Your full name" required />
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="cf-group">
+                <label for="cf_email">Email Address <span class="req">*</span></label>
+                <input type="email" id="cf_email" name="email" placeholder="you@example.com" required />
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="cf-group">
+                <label for="cf_phone">Phone Number</label>
+                <input type="tel" id="cf_phone" name="phone" placeholder="+91 XXXXX XXXXX" />
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="cf-group">
+                <label for="cf_subject">Subject</label>
+                <select id="cf_subject" name="subject">
+                  <option value="">Select a topic…</option>
+                  <option>Join a Free Program</option>
+                  <option>Partnership / Collaboration</option>
+                  <option>Host a Workshop</option>
+                  <option>Sponsorship</option>
+                  <option>Media Inquiry</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="cf-group">
+                <label for="cf_message">Message <span class="req">*</span></label>
+                <textarea id="cf_message" name="message" rows="5" placeholder="Tell us how we can help you…" required></textarea>
+              </div>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn-spk-primary w-100">
+                <i class="bi bi-send-fill"></i> Send Message
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

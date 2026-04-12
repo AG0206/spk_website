@@ -1,0 +1,95 @@
+{% extends 'custom_admin/base_admin.html' %}
+
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h2>Welcome back, {{ request.user.username }} 👋</h2>
+    <p>Here's a quick overview of SPK Organisation's content.</p>
+  </div>
+  <a href="/" class="btn-spk btn-spk-outline" target="_blank"><i class="bi bi-globe2"></i> View Live Site</a>
+</div>
+
+<!-- Stat cards -->
+<div class="row g-3 mb-4">
+  <div class="col-6 col-lg-3">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#e8f5fb;color:#2a6080;"><i class="bi bi-calendar-event-fill"></i></div>
+      <div class="stat-num">{{ event_count }}</div>
+      <div class="stat-label">Active Events</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="stat-card" style="border-top-color:#8898b8;">
+      <div class="stat-icon" style="background:#f0f2f7;color:#4a5878;"><i class="bi bi-images"></i></div>
+      <div class="stat-num">{{ gallery_count }}</div>
+      <div class="stat-label">Gallery Images</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="stat-card" style="border-top-color:#25D366;">
+      <div class="stat-icon" style="background:#e6f9f0;color:#1a7045;"><i class="bi bi-envelope-fill"></i></div>
+      <div class="stat-num">{{ total_contacts }}</div>
+      <div class="stat-label">Total Messages</div>
+    </div>
+  </div>
+  <div class="col-6 col-lg-3">
+    <div class="stat-card" style="border-top-color:#dc3545;">
+      <div class="stat-icon" style="background:#fef0f0;color:#9b1c1c;"><i class="bi bi-bell-fill"></i></div>
+      <div class="stat-num">{{ unread_count }}</div>
+      <div class="stat-label">Unread Messages</div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <!-- Recent contacts -->
+  <div class="col-lg-8">
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Recent Contact Messages</span>
+        <a href="{% url 'custom_admin_contacts' %}" class="btn-spk btn-spk-outline btn-spk-sm">View All</a>
+      </div>
+      <div class="table-responsive">
+        <table class="spk-table">
+          <thead><tr><th>Name</th><th>Subject</th><th>Date</th><th>Status</th></tr></thead>
+          <tbody>
+            {% for c in recent_contacts %}
+            <tr>
+              <td><strong>{{ c.name }}</strong><br><small style="color:#8898b8;">{{ c.email }}</small></td>
+              <td>{{ c.subject|default:"—" }}</td>
+              <td style="white-space:nowrap;">{{ c.created_at|date:"d M Y" }}</td>
+              <td>
+                {% if c.is_read %}
+                  <span class="badge-spk badge-green">Read</span>
+                {% else %}
+                  <span class="badge-spk badge-red">Unread</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" style="text-align:center;color:#8898b8;padding:32px;">No messages yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick actions -->
+  <div class="col-lg-4">
+    <div class="panel h-100">
+      <div class="panel-header"><span class="panel-title">Quick Actions</span></div>
+      <div class="panel-body" style="display:flex;flex-direction:column;gap:10px;">
+        <a href="{% url 'custom_admin_event_add' %}" class="btn-spk btn-spk-navy w-100"><i class="bi bi-plus-circle-fill"></i> Add New Event</a>
+        <a href="{% url 'custom_admin_gallery' %}" class="btn-spk btn-spk-gold w-100"><i class="bi bi-upload"></i> Upload Gallery Image</a>
+        <a href="{% url 'custom_admin_contacts' %}" class="btn-spk btn-spk-outline w-100"><i class="bi bi-download"></i> Export Contacts (Excel)</a>
+        <hr style="border-color:rgba(28,43,74,.08);">
+        <a href="/admin/" class="btn-spk w-100" style="background:#f0f2f7;color:var(--navy);"><i class="bi bi-sliders"></i> Django Admin</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

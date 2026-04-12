@@ -1,0 +1,103 @@
+{% extends 'custom_admin/base_admin.html' %}
+{% block title %}{% if event %}Edit Event{% else %}Add Event{% endif %}{% endblock %}
+{% block page_title %}{% if event %}Edit Event{% else %}Add New Event{% endif %}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h2>{% if event %}Edit: {{ event.title }}{% else %}Add New Event{% endif %}</h2>
+    <p>{% if event %}Update event details below.{% else %}Fill in details to create a new event.{% endif %}</p>
+  </div>
+  <a href="{% url 'custom_admin_events' %}" class="btn-spk btn-spk-outline"><i class="bi bi-arrow-left"></i> Back to Events</a>
+</div>
+
+<div class="panel">
+  <div class="panel-body">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="form-row">
+        <div class="cf-group" style="grid-column:1/-1;">
+          <label class="cf-label">Event Title *</label>
+          <input type="text" name="title" class="cf-input" value="{{ event.title|default:'' }}" required placeholder="e.g. Free Makeup Masterclass"/>
+        </div>
+      </div>
+
+      <div class="cf-group">
+        <label class="cf-label">Description *</label>
+        <textarea name="description" class="cf-textarea" required placeholder="Describe what this event is about...">{{ event.description|default:'' }}</textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="cf-group">
+          <label class="cf-label">Date Label</label>
+          <input type="text" name="date_label" class="cf-input" value="{{ event.date_label|default:'Ongoing 2025' }}" placeholder="e.g. 12 April 2025"/>
+          <div class="form-hint">This is the text shown on the website card, e.g. "Ongoing 2025"</div>
+        </div>
+        <div class="cf-group">
+          <label class="cf-label">Location</label>
+          <input type="text" name="location" class="cf-input" value="{{ event.location|default:'Nagpur, MH' }}" placeholder="e.g. Nagpur, MH"/>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="cf-group">
+          <label class="cf-label">Badge Type</label>
+          <select name="badge" class="cf-select">
+            {% for val,label in badge_choices %}
+            <option value="{{ val }}" {% if event.badge == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="cf-group">
+          <label class="cf-label">Link Button Label</label>
+          <input type="text" name="link_label" class="cf-input" value="{{ event.link_label|default:'Register Interest' }}" placeholder="e.g. Register Interest"/>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="cf-group">
+          <label class="cf-label">Sort Order</label>
+          <input type="number" name="order" class="cf-input" value="{{ event.order|default:0 }}" min="0"/>
+          <div class="form-hint">Lower numbers appear first on the website.</div>
+        </div>
+        <div class="cf-group">
+          <label class="cf-label">Event Image</label>
+          <input type="file" name="image" class="cf-input" accept="image/*" style="padding:8px 12px;"/>
+          {% if event.image %}
+          <div style="margin-top:10px;display:flex;align-items:center;gap:10px;">
+            <img src="{{ event.image.url }}" style="width:80px;height:56px;object-fit:cover;border-radius:4px;"/>
+            <span style="font-size:12px;color:#8898b8;">Current image. Upload a new file to replace.</span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div style="display:flex;gap:24px;flex-wrap:wrap;margin-top:8px;margin-bottom:24px;">
+        <label class="cf-checkbox">
+          <input type="checkbox" name="is_featured" {% if event.is_featured %}checked{% endif %}/>
+          <span><strong>Featured</strong> — Highlighted with a gold border on the website</span>
+        </label>
+        <label class="cf-checkbox">
+          <input type="checkbox" name="is_active" {% if not event or event.is_active %}checked{% endif %}/>
+          <span><strong>Active</strong> — Visible on the website</span>
+        </label>
+      </div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button type="submit" class="btn-spk btn-spk-navy">
+          <i class="bi bi-check-circle-fill"></i> {% if event %}Save Changes{% else %}Create Event{% endif %}
+        </button>
+        <a href="{% url 'custom_admin_events' %}" class="btn-spk btn-spk-outline">Cancel</a>
+        {% if event %}
+        <a href="{% url 'custom_admin_event_delete' event.pk %}"
+           onclick="return confirm('Delete this event? This cannot be undone.')"
+           class="btn-spk btn-spk-danger" style="margin-left:auto;">
+          <i class="bi bi-trash-fill"></i> Delete Event
+        </a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

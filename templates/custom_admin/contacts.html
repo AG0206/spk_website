@@ -1,0 +1,165 @@
+{% extends 'custom_admin/base_admin.html' %}
+{% load admin_tags %}
+{% block title %}Contact Messages{% endblock %}
+{% block page_title %}Contact Messages{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h2>Contact Form Submissions</h2>
+    <p>{{ total_count }} message{{ total_count|pluralize }} · {{ unread_count }} unread</p>
+  </div>
+  <a href="{% url 'custom_admin_contacts_export' %}?{{ request.GET.urlencode }}" class="btn-spk btn-spk-success">
+    <i class="bi bi-file-earmark-excel-fill"></i> Export to Excel
+  </a>
+</div>
+
+<!-- Filter bar -->
+<form method="get" id="filterForm">
+  <div class="filter-bar">
+    <div class="cf-group">
+      <label class="cf-label">Search</label>
+      <input type="text" name="q" class="cf-input" value="{{ request.GET.q }}" placeholder="Name, email, subject…" style="min-width:200px;"/>
+    </div>
+    <div class="cf-group">
+      <label class="cf-label">Status</label>
+      <select name="status" class="cf-select" style="min-width:120px;">
+        <option value="">All</option>
+        <option value="unread" {% if request.GET.status == 'unread' %}selected{% endif %}>Unread</option>
+        <option value="read"   {% if request.GET.status == 'read'   %}selected{% endif %}>Read</option>
+      </select>
+    </div>
+    <div class="cf-group">
+      <label class="cf-label">From Date</label>
+      <input type="date" name="date_from" class="cf-input" value="{{ request.GET.date_from }}" style="min-width:150px;"/>
+    </div>
+    <div class="cf-group">
+      <label class="cf-label">To Date</label>
+      <input type="date" name="date_to" class="cf-input" value="{{ request.GET.date_to }}" style="min-width:150px;"/>
+    </div>
+    <div style="display:flex;gap:8px;align-items:flex-end;padding-bottom:1px;">
+      <button type="submit" class="btn-spk btn-spk-navy"><i class="bi bi-funnel-fill"></i> Filter</button>
+      <a href="{% url 'custom_admin_contacts' %}" class="btn-spk btn-spk-outline"><i class="bi bi-x-circle"></i> Clear</a>
+    </div>
+  </div>
+</form>
+
+<!-- Table -->
+<div class="panel">
+  <div class="table-responsive">
+    <table class="spk-table">
+      <thead>
+        <tr>
+          <th width="30"><input type="checkbox" id="selectAll" style="width:15px;height:15px;cursor:pointer;"/></th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Subject</th>
+          <th>Message</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for contact in contacts %}
+        <tr {% if not contact.is_read %}style="background:rgba(197,227,239,.18);"{% endif %}>
+          <td><input type="checkbox" class="row-check" value="{{ contact.pk }}" style="width:15px;height:15px;cursor:pointer;"/></td>
+          <td>
+            <strong>{{ contact.name }}</strong>
+            {% if not contact.is_read %}<span class="badge-spk badge-red" style="margin-left:6px;font-size:10px;">New</span>{% endif %}
+          </td>
+          <td><a href="mailto:{{ contact.email }}" style="color:var(--navy);font-size:13px;">{{ contact.email }}</a></td>
+          <td style="font-size:13px;">{{ contact.phone|default:"—" }}</td>
+          <td style="font-size:13px;">{{ contact.subject|default:"—" }}</td>
+          <td style="font-size:13px;max-width:220px;">
+            <span class="msg-preview">{{ contact.message|truncatechars:60 }}</span>
+            {% if contact.message|length > 60 %}
+              <a href="#" onclick="toggleMsg(this,'{{ contact.message|escapejs }}');return false;" style="font-size:11px;color:var(--gold);margin-left:4px;">more</a>
+            {% endif %}
+          </td>
+          <td style="white-space:nowrap;font-size:13px;">{{ contact.created_at|date:"d M Y H:i" }}</td>
+          <td>
+            {% if contact.is_read %}
+              <span class="badge-spk badge-green">Read</span>
+            {% else %}
+              <span class="badge-spk badge-red">Unread</span>
+            {% endif %}
+          </td>
+          <td>
+            <div style="display:flex;gap:5px;">
+              <a href="{% url 'custom_admin_contact_toggle_read' contact.pk %}?next={{ request.get_full_path|urlencode }}"
+                 class="btn-spk btn-spk-outline btn-spk-sm"
+                 title="Mark {% if contact.is_read %}unread{% else %}read{% endif %}">
+                <i class="bi {% if contact.is_read %}bi-envelope-open{% else %}bi-envelope-fill{% endif %}"></i>
+              </a>
+              <a href="{% url 'custom_admin_contact_delete' contact.pk %}?next={{ request.get_full_path|urlencode }}"
+                 onclick="return confirm('Delete message from {{ contact.name }}?')"
+                 class="btn-spk btn-spk-danger btn-spk-sm">
+                <i class="bi bi-trash-fill"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="9" style="text-align:center;color:#8898b8;padding:48px;">
+          No messages found{% if request.GET.q or request.GET.status or request.GET.date_from %}
+          matching your filters. <a href="{% url 'custom_admin_contacts' %}" style="color:var(--navy);">Clear filters</a>
+          {% endif %}.
+        </td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  {% if contacts.has_other_pages %}
+  <div class="spk-pagination">
+    <span class="page-info">
+      Showing {{ contacts.start_index }}–{{ contacts.end_index }} of {{ contacts.paginator.count }} messages
+    </span>
+    <div class="page-buttons">
+      {% if contacts.has_previous %}
+        <a href="?{% url_replace request 'page' contacts.previous_page_number %}" class="page-btn"><i class="bi bi-chevron-left"></i></a>
+      {% else %}
+        <span class="page-btn disabled"><i class="bi bi-chevron-left"></i></span>
+      {% endif %}
+
+      {% for num in contacts.paginator.page_range %}
+        {% if num == contacts.number %}
+          <span class="page-btn active">{{ num }}</span>
+        {% elif num >= contacts.number|add:"-3" and num <= contacts.number|add:"3" %}
+          <a href="?{% url_replace request 'page' num %}" class="page-btn">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if contacts.has_next %}
+        <a href="?{% url_replace request 'page' contacts.next_page_number %}" class="page-btn"><i class="bi bi-chevron-right"></i></a>
+      {% else %}
+        <span class="page-btn disabled"><i class="bi bi-chevron-right"></i></span>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.getElementById('selectAll').addEventListener('change', function(){
+    document.querySelectorAll('.row-check').forEach(c => c.checked = this.checked);
+  });
+  function toggleMsg(link, full){
+    const span = link.previousElementSibling;
+    if(link.dataset.expanded){
+      span.textContent = full.substring(0,60)+'…';
+      link.textContent = 'more';
+      delete link.dataset.expanded;
+    } else {
+      span.textContent = full;
+      link.textContent = 'less';
+      link.dataset.expanded = 1;
+    }
+  }
+</script>
+{% endblock %}

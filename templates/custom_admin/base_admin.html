@@ -1,0 +1,296 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}Admin{% endblock %} – SPK Organisation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"/>
+  <style>
+    :root{
+      --navy:#1c2b4a; --navy-mid:#263450; --navy-light:#2d3e62;
+      --gold:#b8935a; --gold-light:#d4af7a; --gold-pale:#f5ead8;
+      --sky:#c5e3ef; --sky-light:#e8f5fb;
+      --cream:#f8f4ec; --warm:#fdfaf5;
+      --sidebar-w:260px;
+      --header-h:64px;
+      --serif:'Cormorant Garamond',serif;
+      --sans:'DM Sans',sans-serif;
+      --radius:8px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:var(--sans);background:#f0f2f7;color:var(--navy);min-height:100vh;display:flex;}
+
+    /* ── SIDEBAR ── */
+    .spk-sidebar{
+      width:var(--sidebar-w);
+      background:var(--navy);
+      min-height:100vh;
+      position:fixed;
+      top:0;left:0;bottom:0;
+      display:flex;flex-direction:column;
+      z-index:200;
+      transition:transform .3s ease;
+    }
+    .sidebar-brand{
+      padding:24px 24px 20px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      display:flex;align-items:center;gap:12px;
+    }
+    .brand-mark{
+      width:40px;height:40px;background:rgba(255,255,255,.08);
+      border-radius:50%;display:flex;align-items:center;justify-content:center;
+      position:relative;flex-shrink:0;
+    }
+    .brand-mark::after{content:'';position:absolute;inset:3px;border-radius:50%;border:1.5px solid var(--gold);opacity:.7;}
+    .brand-mark span{font-family:var(--serif);font-size:12px;font-weight:700;color:#fff;position:relative;z-index:1;}
+    .brand-text strong{display:block;font-family:var(--serif);font-size:16px;font-weight:700;color:#fff;line-height:1.1;}
+    .brand-text em{font-style:normal;font-size:10px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;}
+
+    .sidebar-nav{padding:16px 0;flex:1;overflow-y:auto;}
+    .nav-section-label{
+      font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+      color:rgba(255,255,255,.3);padding:12px 24px 6px;
+    }
+    .nav-item{display:block;padding:11px 24px;display:flex;align-items:center;gap:12px;
+      color:rgba(255,255,255,.6);font-size:14px;font-weight:500;text-decoration:none;
+      border-left:3px solid transparent;transition:all .2s;position:relative;}
+    .nav-item:hover{color:#fff;background:rgba(255,255,255,.06);border-left-color:rgba(255,255,255,.2);}
+    .nav-item.active{color:#fff;background:rgba(184,147,90,.12);border-left-color:var(--gold);}
+    .nav-item i{font-size:18px;flex-shrink:0;width:20px;text-align:center;}
+    .nav-badge{margin-left:auto;background:var(--gold);color:#fff;font-size:10px;font-weight:700;
+      padding:2px 8px;border-radius:100px;}
+
+    .sidebar-footer{padding:20px 24px;border-top:1px solid rgba(255,255,255,.08);}
+    .sidebar-footer a{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.5);font-size:13px;text-decoration:none;transition:color .2s;}
+    .sidebar-footer a:hover{color:#fff;}
+
+    /* ── MAIN ── */
+    .spk-main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh;}
+
+    /* ── TOPBAR ── */
+    .spk-topbar{
+      height:var(--header-h);background:#fff;
+      border-bottom:1px solid rgba(28,43,74,.08);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 32px;position:sticky;top:0;z-index:100;
+      box-shadow:0 2px 8px rgba(28,43,74,.06);
+    }
+    .topbar-title{font-family:var(--serif);font-size:22px;font-weight:600;color:var(--navy);}
+    .topbar-right{display:flex;align-items:center;gap:16px;}
+    .topbar-user{display:flex;align-items:center;gap:10px;}
+    .user-avatar{width:36px;height:36px;background:var(--navy);border-radius:50%;
+      display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600;}
+    .user-name{font-size:14px;font-weight:600;color:var(--navy);}
+    .btn-view-site{background:var(--sky-light);color:var(--navy);border:1px solid var(--sky);
+      padding:7px 16px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;
+      display:flex;align-items:center;gap:6px;transition:background .2s;}
+    .btn-view-site:hover{background:var(--sky);color:var(--navy);}
+    .hamburger{display:none;background:none;border:none;cursor:pointer;font-size:22px;color:var(--navy);}
+
+    /* ── CONTENT ── */
+    .spk-content{padding:28px 32px;flex:1;}
+
+    /* ── CARDS & UTILITIES ── */
+    .page-header{margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+    .page-header h2{font-family:var(--serif);font-size:30px;font-weight:600;color:var(--navy);}
+    .page-header p{font-size:13.5px;color:#8898b8;margin-top:2px;}
+
+    .stat-card{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:0 2px 12px rgba(28,43,74,.06);border-top:3px solid var(--gold);}
+    .stat-card .stat-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;}
+    .stat-card .stat-num{font-family:var(--serif);font-size:38px;font-weight:600;color:var(--navy);line-height:1;}
+    .stat-card .stat-label{font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#8898b8;margin-top:6px;}
+
+    .panel{background:#fff;border-radius:var(--radius);box-shadow:0 2px 12px rgba(28,43,74,.06);overflow:hidden;}
+    .panel-header{padding:18px 24px;border-bottom:1px solid rgba(28,43,74,.07);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+    .panel-title{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--navy);}
+    .panel-body{padding:24px;}
+
+    /* Buttons */
+    .btn-spk{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:6px;font-size:13.5px;font-weight:600;border:none;cursor:pointer;transition:all .2s;text-decoration:none;}
+    .btn-spk-navy{background:var(--navy);color:#fff;}
+    .btn-spk-navy:hover{background:var(--navy-mid);color:#fff;transform:translateY(-1px);}
+    .btn-spk-gold{background:var(--gold);color:#fff;}
+    .btn-spk-gold:hover{background:#a07a44;color:#fff;}
+    .btn-spk-outline{background:transparent;color:var(--navy);border:1.5px solid var(--navy);}
+    .btn-spk-outline:hover{background:var(--navy);color:#fff;}
+    .btn-spk-danger{background:#dc3545;color:#fff;}
+    .btn-spk-danger:hover{background:#b02a37;color:#fff;}
+    .btn-spk-success{background:#198754;color:#fff;}
+    .btn-spk-success:hover{background:#146c43;color:#fff;}
+    .btn-spk-sm{padding:6px 14px;font-size:12px;}
+
+    /* Table */
+    .spk-table{width:100%;border-collapse:collapse;font-size:14px;}
+    .spk-table thead tr{background:rgba(28,43,74,.04);}
+    .spk-table th{padding:12px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8898b8;border-bottom:1px solid rgba(28,43,74,.08);}
+    .spk-table td{padding:14px 16px;border-bottom:1px solid rgba(28,43,74,.05);vertical-align:middle;}
+    .spk-table tbody tr:hover{background:rgba(197,227,239,.15);}
+    .spk-table tbody tr:last-child td{border-bottom:none;}
+    .td-img{width:56px;height:42px;object-fit:cover;border-radius:4px;background:var(--sky-light);}
+    .td-img-placeholder{width:56px;height:42px;background:var(--sky-light);border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--sky);font-size:18px;}
+
+    /* Badges */
+    .badge-spk{display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.5px;}
+    .badge-navy{background:rgba(28,43,74,.1);color:var(--navy);}
+    .badge-gold{background:rgba(184,147,90,.15);color:#8a6030;}
+    .badge-green{background:#e6f9f0;color:#1a7045;}
+    .badge-red{background:#fef0f0;color:#9b1c1c;}
+    .badge-sky{background:var(--sky-light);color:#2a6080;}
+
+    /* Forms */
+    .cf-group{margin-bottom:18px;}
+    .cf-label{display:block;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#4a5878;margin-bottom:7px;}
+    .cf-input,.cf-select,.cf-textarea{width:100%;padding:11px 14px;border:1.5px solid rgba(28,43,74,.12);border-radius:6px;font-size:14px;color:var(--navy);background:#fff;outline:none;font-family:var(--sans);transition:border-color .2s,box-shadow .2s;}
+    .cf-input:focus,.cf-select:focus,.cf-textarea:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(28,43,74,.07);}
+    .cf-textarea{resize:vertical;min-height:110px;}
+    .cf-checkbox{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;color:#4a5878;}
+    .cf-checkbox input{width:16px;height:16px;cursor:pointer;}
+    .form-hint{font-size:12px;color:#8898b8;margin-top:5px;}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+    /* Alert */
+    .spk-alert{padding:13px 18px;border-radius:6px;font-size:14px;font-weight:500;display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+    .spk-alert i{font-size:18px;flex-shrink:0;}
+    .alert-success{background:#e6f9f0;border:1px solid #a3e0bf;color:#1a7045;}
+    .alert-error{background:#fef0f0;border:1px solid #f5b8b8;color:#9b1c1c;}
+
+    /* Gallery grid */
+    .gallery-upload-area{border:2px dashed rgba(28,43,74,.2);border-radius:var(--radius);padding:40px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;}
+    .gallery-upload-area:hover{border-color:var(--gold);background:var(--gold-pale);}
+    .gallery-upload-area i{font-size:40px;color:#8898b8;margin-bottom:12px;}
+    .gallery-grid-admin{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-top:20px;}
+    .gallery-thumb{position:relative;border-radius:6px;overflow:hidden;aspect-ratio:1/1;background:var(--sky-light);}
+    .gallery-thumb img{width:100%;height:100%;object-fit:cover;}
+    .gallery-thumb-overlay{position:absolute;inset:0;background:rgba(28,43,74,.7);opacity:0;display:flex;align-items:center;justify-content:flex-end;flex-direction:column;gap:6px;padding:10px;transition:opacity .2s;}
+    .gallery-thumb:hover .gallery-thumb-overlay{opacity:1;}
+    .gallery-thumb-label{position:absolute;bottom:0;left:0;right:0;background:rgba(28,43,74,.75);padding:6px 8px;}
+    .gallery-thumb-label span{font-size:11px;color:#fff;font-weight:500;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .gallery-thumb-label em{font-style:normal;font-size:10px;color:rgba(255,255,255,.6);}
+
+    /* Filter bar */
+    .filter-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-bottom:18px;background:#fff;border-radius:var(--radius);padding:16px 20px;box-shadow:0 2px 8px rgba(28,43,74,.05);}
+    .filter-bar .cf-group{margin-bottom:0;}
+    .filter-bar .cf-label{margin-bottom:5px;}
+    .filter-bar .cf-input,.filter-bar .cf-select{min-width:160px;}
+
+    /* Pagination */
+    .spk-pagination{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:16px 24px;border-top:1px solid rgba(28,43,74,.07);}
+    .page-info{font-size:13px;color:#8898b8;}
+    .page-buttons{display:flex;gap:4px;}
+    .page-btn{padding:6px 12px;border:1.5px solid rgba(28,43,74,.12);border-radius:4px;font-size:13px;background:#fff;color:var(--navy);cursor:pointer;text-decoration:none;transition:all .2s;}
+    .page-btn:hover,.page-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+    .page-btn.disabled{opacity:.4;pointer-events:none;}
+
+    /* Responsive */
+    @media(max-width:991px){
+      .spk-sidebar{transform:translateX(-100%);}
+      .spk-sidebar.open{transform:translateX(0);}
+      .spk-main{margin-left:0;}
+      .hamburger{display:block;}
+      .form-row{grid-template-columns:1fr;}
+      .spk-content{padding:20px 16px;}
+      .topbar-title{font-size:18px;}
+    }
+    @media(max-width:576px){
+      .stat-card{padding:18px;}
+      .panel-header{padding:14px 16px;}
+      .panel-body{padding:16px;}
+      .spk-table th,.spk-table td{padding:10px 10px;}
+    }
+    .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:199;}
+    .overlay.active{display:block;}
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<!-- Sidebar overlay (mobile) -->
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- ── SIDEBAR ── -->
+<aside class="spk-sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-mark"><span>SPK</span></div>
+    <div class="brand-text">
+      <strong>SPK Admin</strong>
+      <em>Organisation</em>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Overview</div>
+    <a href="{% url 'custom_admin_dashboard' %}" class="nav-item {% if active_nav == 'dashboard' %}active{% endif %}">
+      <i class="bi bi-grid-1x2-fill"></i> Dashboard
+    </a>
+
+    <div class="nav-section-label">Content</div>
+    <a href="{% url 'custom_admin_events' %}" class="nav-item {% if active_nav == 'events' %}active{% endif %}">
+      <i class="bi bi-calendar-event-fill"></i> Events
+      {% if event_count %}<span class="nav-badge">{{ event_count }}</span>{% endif %}
+    </a>
+    <a href="{% url 'custom_admin_gallery' %}" class="nav-item {% if active_nav == 'gallery' %}active{% endif %}">
+      <i class="bi bi-images"></i> Gallery
+      {% if gallery_count %}<span class="nav-badge">{{ gallery_count }}</span>{% endif %}
+    </a>
+
+    <div class="nav-section-label">Inquiries</div>
+    <a href="{% url 'custom_admin_contacts' %}" class="nav-item {% if active_nav == 'contacts' %}active{% endif %}">
+      <i class="bi bi-envelope-fill"></i> Contact Messages
+      {% if unread_count %}<span class="nav-badge">{{ unread_count }}</span>{% endif %}
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a href="/"><i class="bi bi-globe2"></i> View Website</a>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<div class="spk-main">
+
+  <!-- Topbar -->
+  <header class="spk-topbar">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <button class="hamburger d-lg-none" onclick="openSidebar()"><i class="bi bi-list"></i></button>
+      <div>
+        <div class="topbar-title">{% block page_title %}Dashboard{% endblock %}</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <a href="/" class="btn-view-site d-none d-sm-flex"><i class="bi bi-box-arrow-up-right"></i> View Site</a>
+      <div class="topbar-user">
+        <div class="user-avatar">{{ request.user.username|first|upper }}</div>
+        <span class="user-name d-none d-md-block">{{ request.user.username }}</span>
+      </div>
+      <a href="{% url 'custom_admin_logout' %}" class="btn-spk btn-spk-outline btn-spk-sm" style="border-color:rgba(28,43,74,.2);">
+        <i class="bi bi-box-arrow-right"></i><span class="d-none d-md-inline">Logout</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <div class="spk-content">
+    {% if messages %}
+      {% for msg in messages %}
+      <div class="spk-alert {% if msg.tags == 'success' %}alert-success{% else %}alert-error{% endif %}">
+        <i class="bi {% if msg.tags == 'success' %}bi-check-circle-fill{% else %}bi-exclamation-circle-fill{% endif %}"></i>
+        {{ msg }}
+      </div>
+      {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+  function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('active');}
+  function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('active');}
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>
